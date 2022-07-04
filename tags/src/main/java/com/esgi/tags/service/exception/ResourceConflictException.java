@@ -1,4 +1,4 @@
-package fr.gamedev.tags.service.exception;
+package com.esgi.tags.service.exception;
 
 public class ResourceConflictException extends Exception {
     public ResourceConflictException(Class<?> resourceType, Object resourceId) {

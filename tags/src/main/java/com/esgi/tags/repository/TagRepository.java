@@ -1,6 +1,6 @@
-package fr.gamedev.tags.repository;
+package com.esgi.tags.repository;
 
-import fr.gamedev.tags.data.Tag;
+import com.esgi.tags.data.Tag;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 

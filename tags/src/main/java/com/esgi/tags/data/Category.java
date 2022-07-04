@@ -1,4 +1,4 @@
-package fr.gamedev.tags.data;
+package com.esgi.tags.data;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -1,4 +1,4 @@
-package fr.gamedev.tags.service.exception;
+package com.esgi.tags.service.exception;
 
 public class ResourceNotFoundException extends Exception {
     public ResourceNotFoundException(Class<?> resourceType) {

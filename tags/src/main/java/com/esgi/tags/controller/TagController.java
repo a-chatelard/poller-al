@@ -1,9 +1,9 @@
-package fr.gamedev.tags.controller;
+package com.esgi.tags.controller;
 
-import fr.gamedev.tags.data.Tag;
-import fr.gamedev.tags.service.TagService;
-import fr.gamedev.tags.service.exception.ResourceConflictException;
-import fr.gamedev.tags.service.exception.ResourceNotFoundException;
+import com.esgi.tags.data.Tag;
+import com.esgi.tags.service.TagService;
+import com.esgi.tags.service.exception.ResourceConflictException;
+import com.esgi.tags.service.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
