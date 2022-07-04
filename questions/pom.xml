@@ -8,12 +8,12 @@
         <version>2.7.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>fr.gamedev</groupId>
-    <artifactId>tags</artifactId>
+    <groupId>com.esgi</groupId>
+    <artifactId>questions</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>TAGS</name>
-    <description>TAGS</description>
+    <name>questions</name>
+    <description>questions</description>
     <properties>
         <java.version>17</java.version>
     </properties>

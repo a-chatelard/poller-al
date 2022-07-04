@@ -9,10 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.esgi</groupId>
-    <artifactId>Identity</artifactId>
+    <artifactId>identity</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Identity</name>
-    <description>Identity</description>
+    <packaging>war</packaging>
+    <name>identity</name>
+    <description>identity</description>
     <properties>
         <java.version>17</java.version>
     </properties>
