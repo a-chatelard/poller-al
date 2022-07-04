@@ -1,48 +1,31 @@
 package fr.gamedev.tags.data;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
-
-import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
 public class Category {
 
     /**
-     * The category id.
-     */
-    @GeneratedValue(strategy = SEQUENCE)
-    @Id
-    private long id;
-
-    /**
      * The category's label.
      */
+    @Id
     private String label;
 
-    @OneToMany(mappedBy = "category")
+    /**
+     * Related tags.
+     */
+    @JsonIgnore
+    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
     private List<Tag> tags;
 
     public Category() {}
 
     public Category(String label) {
         this.label = label;
-    }
-
-    /**
-     * @return the id
-     */
-    public long getId() {
-        return id;
-    }
-
-    /**
-     * @param newId the id to set
-     */
-    public void setId(
-            final long newId) {
-        this.id = newId;
     }
 
     /**
@@ -53,18 +36,17 @@ public class Category {
     }
 
     /**
-     * @param newLabel the label to set
+     * @return the list of related tags
      */
-    public void setLabel(
-            final String newLabel) {
-        this.label = newLabel;
-    }
-
     public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
+    /**
+     * Add a tag in this category
+     * @param tag the tag to add to this category
+     */
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
     }
 }

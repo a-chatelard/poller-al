@@ -9,6 +9,18 @@ import java.util.Set;
 @Entity
 public class Tag {
 
+    /**
+     * The tag's label.
+     */
+    @Id
+    private String label;
+
+    /**
+     * The tag's category.
+     */
+    @ManyToOne(optional = false)
+    private Category category;
+
     public Tag() {}
 
     public Tag(String label) {
@@ -16,56 +28,10 @@ public class Tag {
     }
 
     /**
-     * The tag id.
+     * @return the label
      */
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Id
-    private long id;
-
-    /**
-     * The users associated to the tag.
-     */
-    @OneToMany
-    private Set<UserTag> usersTags = new HashSet<>();
-
-    /**
-     * The tag's category.
-     */
-    @ManyToOne
-    private Category category;
-
-    /**
-     * The tag's label.
-     */
-    private String label;
-
-    /**
-     * @return the id
-     */
-    public long getId() {
-        return id;
-    }
-
-    /**
-     * @param newId the id to set
-     */
-    public void setId(final long newId) {
-        this.id = newId;
-    }
-
-    /**
-     * @return the list of related user tags
-     */
-    public Set<UserTag> getUsersTags() {
-        return usersTags;
-    }
-
-    public void setUsersTags(Set<UserTag> usersTags) {
-        this.usersTags = usersTags;
-    }
-
-    public void addUserTag(UserTag userTag) {
-        this.usersTags.add(userTag);
+    public String getLabel() {
+        return label;
     }
 
     /**
@@ -80,19 +46,5 @@ public class Tag {
      */
     public void setCategory(final Category newCategory) {
         this.category = newCategory;
-    }
-
-    /**
-     * @return the label
-     */
-    public String getLabel() {
-        return label;
-    }
-
-    /**
-     * @param newLabel the label to set
-     */
-    public void setLabel(final String newLabel) {
-        this.label = newLabel;
     }
 }

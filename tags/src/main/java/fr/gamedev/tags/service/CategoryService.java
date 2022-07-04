@@ -8,20 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
-
-import java.util.Optional;
 
 @Service
 public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public Category getById(Long categoryId) throws ResourceNotFoundException {
-        var category = categoryRepository.findById(categoryId);
+    public Category getByLabel(String categoryLabel) throws ResourceNotFoundException {
+        var category = categoryRepository.findById(categoryLabel);
 
         if (category.isEmpty()) {
-            throw new ResourceNotFoundException(Category.class, categoryId);
+            throw new ResourceNotFoundException(Category.class, categoryLabel);
         }
 
         return category.get();
@@ -32,10 +29,8 @@ public class CategoryService {
     }
 
     public Category create(String categoryLabel) throws ResourceConflictException {
-        var existingCategory = categoryRepository.findByLabel(categoryLabel);
-
-        if (existingCategory.isPresent()) {
-            throw new ResourceConflictException("A category of label " + categoryLabel + " already exists.");
+        if (categoryRepository.existsById(categoryLabel)) {
+            throw new ResourceConflictException(Category.class, categoryLabel);
         }
 
         var category = new Category(categoryLabel);
@@ -43,5 +38,9 @@ public class CategoryService {
         categoryRepository.save(category);
 
         return category;
+    }
+
+    public void deleteByLabel(String categoryLabel) {
+        categoryRepository.deleteById(categoryLabel);
     }
 }
