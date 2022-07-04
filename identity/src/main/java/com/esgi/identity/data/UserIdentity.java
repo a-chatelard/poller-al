@@ -1,4 +1,4 @@
-package com.esgi.identity.model;
+package com.esgi.identity.data;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;

@@ -1,7 +1,7 @@
-package com.esgi.identity.web.controllers;
+package com.esgi.identity.controllers;
 
-import com.esgi.identity.model.UserIdentity;
-import com.esgi.identity.web.services.UserService;
+import com.esgi.identity.data.UserIdentity;
+import com.esgi.identity.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,7 +1,7 @@
-package com.esgi.identity.web.services;
+package com.esgi.identity.services;
 
-import com.esgi.identity.model.UserIdentity;
-import com.esgi.identity.web.repositories.UserRepository;
+import com.esgi.identity.data.UserIdentity;
+import com.esgi.identity.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

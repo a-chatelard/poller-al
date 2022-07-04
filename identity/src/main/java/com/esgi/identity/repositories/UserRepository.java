@@ -1,6 +1,6 @@
-package com.esgi.identity.web.repositories;
+package com.esgi.identity.repositories;
 
-import com.esgi.identity.model.UserIdentity;
+import com.esgi.identity.data.UserIdentity;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
