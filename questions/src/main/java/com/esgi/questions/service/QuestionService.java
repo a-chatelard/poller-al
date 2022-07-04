@@ -1,14 +1,13 @@
-package fr.gamedev.question.service;
+package com.esgi.questions.service;
 
 import java.util.Optional;
 
+import com.esgi.questions.data.Answer;
+import com.esgi.questions.data.UserAnswer;
+import com.esgi.questions.repository.AnswerRepository;
+import com.esgi.questions.repository.UserAnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import fr.gamedev.question.data.Answer;
-import fr.gamedev.question.data.UserAnswer;
-import fr.gamedev.question.repository.AnswerRepository;
-import fr.gamedev.question.repository.UserAnswerRepository;
 
 @Service
 public final class QuestionService {

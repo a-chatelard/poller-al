@@ -1,11 +1,11 @@
-package fr.gamedev.question;
+package com.esgi.questions.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.gamedev.question.service.QuestionService;
+import com.esgi.questions.service.QuestionService;
 
 /**
  * @author djer1

@@ -1,4 +1,4 @@
-package fr.gamedev.question.data;
+package com.esgi.questions.data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,7 +29,7 @@ public class UserAnswer {
     private long id;
 
     /**
-     * The user who answered.
+     * The id of the user who answered.
      */
     @ManyToOne
     private User user;

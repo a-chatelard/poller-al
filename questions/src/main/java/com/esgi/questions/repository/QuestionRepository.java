@@ -1,9 +1,9 @@
-package fr.gamedev.question.repository;
+package com.esgi.questions.repository;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import fr.gamedev.question.data.Question;
+import com.esgi.questions.data.Question;
 
 /**
  * @author djer1
