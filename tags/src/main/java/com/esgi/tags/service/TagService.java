@@ -17,27 +17,40 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class TagService {
 
+    /**
+     * The category service.
+     */
     @Autowired
     private CategoryService categoryService;
 
+    /**
+     * The user tag repository.
+     */
     @Autowired
     private UserTagRepository userTagRepository;
 
+    /**
+     * The question tag repository.
+     */
     @Autowired
     private QuestionTagRepository questionTagRepository;
 
+    /**
+     * The tag repository.
+     */
     @Autowired
     private TagRepository tagRepository;
 
     /**
      * Create a tag.
-     * @param categoryLabel
-     * @param tagLabel
-     * @return
-     * @throws ResourceNotFoundException
-     * @throws ResourceConflictException
+     * @param categoryLabel the related category label.
+     * @param tagLabel the tag label.
+     * @return the created tag.
+     * @throws ResourceNotFoundException Tag or Category not found.
+     * @throws ResourceConflictException Tag already exists.
      */
-    public Tag create(String categoryLabel, String tagLabel) throws ResourceNotFoundException, ResourceConflictException {
+    public Tag create(final String categoryLabel, final String tagLabel)
+            throws ResourceNotFoundException, ResourceConflictException {
 
         if (tagRepository.existsById(tagLabel)) {
             throw new ResourceConflictException(Tag.class, tagLabel);
@@ -53,7 +66,13 @@ public class TagService {
         return tag;
     }
 
-    public Tag getByLabel(String tagLabel) throws ResourceNotFoundException {
+    /**
+     * Get a tag by label.
+     * @param tagLabel the tag label.
+     * @return the related tag.
+     * @throws ResourceNotFoundException Tag not found.
+     */
+    public Tag getByLabel(final String tagLabel) throws ResourceNotFoundException {
         var tag = tagRepository.findById(tagLabel);
         if (tag.isEmpty()) {
             throw new ResourceNotFoundException(Tag.class, tagLabel);
@@ -61,15 +80,30 @@ public class TagService {
         return tag.get();
     }
 
-    public Page<Tag> getAllPaged(Pageable pageable) {
+    /**
+     * Get all the tags with paging.
+     * @param pageable the paging parameters.
+     * @return the list of tags paged.
+     */
+    public Page<Tag> getAllPaged(final Pageable pageable) {
         return tagRepository.findAll(pageable);
     }
 
-    public void delete(String tagLabel) {
+    /**
+     * Delete a tag by label.
+     * @param tagLabel the tag label.
+     */
+    public void delete(final String tagLabel) {
         tagRepository.deleteById(tagLabel);
     }
 
-    public void addUserTag(String tagLabel, Long userId) throws ResourceNotFoundException {
+    /**
+     * Add a tag to a user.
+     * @param tagLabel the tag label.
+     * @param userId the user ID.
+     * @throws ResourceNotFoundException Tag or User not found.
+     */
+    public void addUserTag(final String tagLabel, final Long userId) throws ResourceNotFoundException {
         var doesUserExist = doesUserExist(userId);
         if (!doesUserExist) {
             throw new ResourceNotFoundException("User", userId);
@@ -82,7 +116,13 @@ public class TagService {
         tagRepository.save(tag);
     }
 
-    public void removeUserTag(String tagLabel, Long userId) throws ResourceNotFoundException {
+    /**
+     * Remove a tag from a user.
+     * @param tagLabel the tag label.
+     * @param userId the user ID.
+     * @throws ResourceNotFoundException Tag or User not found.
+     */
+    public void removeUserTag(final String tagLabel, final Long userId) throws ResourceNotFoundException {
         var doesUserExist = doesUserExist(userId);
         if (!doesUserExist) {
             throw new ResourceNotFoundException("User", userId);
@@ -95,7 +135,13 @@ public class TagService {
         tagRepository.save(tag);
     }
 
-    public void addQuestionTag(String tagLabel, Long questionId) throws ResourceNotFoundException {
+    /**
+     * Add a tag to a label.
+     * @param tagLabel the tag label.
+     * @param questionId the question ID.
+     * @throws ResourceNotFoundException Question or Tag not found.
+     */
+    public void addQuestionTag(final String tagLabel, final Long questionId) throws ResourceNotFoundException {
         // Devrait être remplacé par une message kafka sur un topic type "QuestionCheckTopic"
         // en envoyant l'identifiant de la question.
 
@@ -112,7 +158,13 @@ public class TagService {
         tagRepository.save(tag);
     }
 
-    public void removeQuestionTag(String tagLabel, Long questionId) throws ResourceNotFoundException {
+    /**
+     * Remove a tag from a question.
+     * @param tagLabel the tag label.
+     * @param questionId the question ID.
+     * @throws ResourceNotFoundException Tag or Question not found.
+     */
+    public void removeQuestionTag(final String tagLabel, final Long questionId) throws ResourceNotFoundException {
         var doesQuestionExist = doesQuestionExist(questionId);
         if (!doesQuestionExist) {
             throw new ResourceNotFoundException("Question", questionId);
@@ -125,15 +177,30 @@ public class TagService {
         tagRepository.save(tag);
     }
 
-    public long deleteAllUserTags(Long userId) {
+    /**
+     * Delete all tags related to a user.
+     * @param userId the user ID.
+     * @return the amount of related tags deleted.
+     */
+    public long deleteAllUserTags(final Long userId) {
         return userTagRepository.deleteByUserId(userId);
     }
 
-    public long deleteAllQuestionTags(Long questionId) {
+    /**
+     * Delete all tags related to question.
+     * @param questionId the question ID.
+     * @return the amount of related tags deleted.
+     */
+    public long deleteAllQuestionTags(final Long questionId) {
         return questionTagRepository.deleteByQuestionId(questionId);
     }
 
-    private boolean doesUserExist(Long userId) {
+    /**
+     * Return if a user exists in the Identity microservice.
+     * @param userId the user ID.
+     * @return true if the user exists otherwise false.
+     */
+    private boolean doesUserExist(final Long userId) {
         // Devrait être remplacé par une message kafka sur un topic type "UserCheckTopic"
         // en envoyant l'identifiant de l'utilisateur.
 
@@ -143,7 +210,12 @@ public class TagService {
         return Boolean.TRUE.equals(restTemplate.getForObject(uri, Boolean.class));
     }
 
-    private boolean doesQuestionExist(Long questionId) {
+    /**
+     * Return if a question exists in the Questions microservice.
+     * @param questionId the question ID.
+     * @return true if the question exists otherwise false.
+     */
+    private boolean doesQuestionExist(final Long questionId) {
         final String uri = "http://localhost:8082/questions/" + questionId + "/exists";
 
         RestTemplate restTemplate = new RestTemplate();

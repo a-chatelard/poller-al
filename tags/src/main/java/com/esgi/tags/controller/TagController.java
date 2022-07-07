@@ -7,17 +7,25 @@ import com.esgi.tags.service.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RequestMapping("/tags")
 @RestController
 public class TagController {
 
+    /**
+     * The tag service.
+     */
     @Autowired
     private TagService tagService;
 
     /**
-     * Create a tag
+     * Create a tag.
      * @param categoryLabel the related category label.
      * @param tagLabel the tag label.
      * @return the created tag.
@@ -25,7 +33,7 @@ public class TagController {
      * @throws ResourceConflictException Tag aleady exists.
      */
     @PostMapping("/category/{categoryLabel}")
-    public Tag createTag(@PathVariable(name = "categoryLabel") String categoryLabel, String tagLabel)
+    public Tag createTag(final @PathVariable(name = "categoryLabel") String categoryLabel, final String tagLabel)
             throws ResourceNotFoundException, ResourceConflictException {
         return tagService.create(categoryLabel, tagLabel);
     }
@@ -37,7 +45,7 @@ public class TagController {
      * @throws ResourceNotFoundException Tag not found.
      */
     @GetMapping("/{tagLabel}")
-    public Tag getTagByLabel(@PathVariable(name = "tagLabel") String tagLabel) throws ResourceNotFoundException{
+    public Tag getTagByLabel(final @PathVariable(name = "tagLabel") String tagLabel) throws ResourceNotFoundException {
         return tagService.getByLabel(tagLabel);
     }
 
@@ -47,16 +55,16 @@ public class TagController {
      * @return the list of tag paged.
      */
     @GetMapping
-    public Page<Tag> getAllTagsPaged(Pageable pageable) {
+    public Page<Tag> getAllTagsPaged(final Pageable pageable) {
         return tagService.getAllPaged(pageable);
     }
 
     /**
-     * Delete a tag
+     * Delete a tag.
      * @param tagLabel the tag label.
      */
     @DeleteMapping("/{tagLabel}")
-    public void deleteTag(@PathVariable(name = "tagLabel") String tagLabel) {
+    public void deleteTag(final @PathVariable(name = "tagLabel") String tagLabel) {
         tagService.delete(tagLabel);
     }
 
@@ -68,8 +76,8 @@ public class TagController {
      */
     @PostMapping("/{tagLabel}/user/{userId}")
     public void addUserTag(
-            @PathVariable(name = "tagLabel") String tagLabel,
-            @PathVariable(name = "userId") Long userId)
+            final @PathVariable(name = "tagLabel") String tagLabel,
+            final @PathVariable(name = "userId") Long userId)
             throws ResourceNotFoundException {
         tagService.addUserTag(tagLabel, userId);
     }
@@ -82,8 +90,8 @@ public class TagController {
      */
     @DeleteMapping("/{tagLabel}/user/{userId}")
     public void removeUserTag(
-    @PathVariable(name = "tagLabel") String tagLabel,
-    @PathVariable(name = "userId") Long userId)
+        final @PathVariable(name = "tagLabel") String tagLabel,
+        final @PathVariable(name = "userId") Long userId)
             throws ResourceNotFoundException {
         tagService.removeUserTag(tagLabel, userId);
     }
@@ -96,8 +104,8 @@ public class TagController {
      */
     @PostMapping("/{tagLabel}/question/{questionId}")
     public void addQuestionTag(
-            @PathVariable(name = "tagLabel") String tagLabel,
-            @PathVariable(name = "questionId") Long questionId)
+        final @PathVariable(name = "tagLabel") String tagLabel,
+        final @PathVariable(name = "questionId") Long questionId)
             throws ResourceNotFoundException {
         tagService.addQuestionTag(tagLabel, questionId);
     }
@@ -110,8 +118,8 @@ public class TagController {
      */
     @DeleteMapping("/{tagLabel}/question/{questionId}")
     public void removeQuestionTag(
-            @PathVariable(name = "tagLabel") String tagLabel,
-            @PathVariable(name = "questionId") Long questionId)
+        final @PathVariable(name = "tagLabel") String tagLabel,
+        final @PathVariable(name = "questionId") Long questionId)
             throws ResourceNotFoundException {
         tagService.removeQuestionTag(tagLabel, questionId);
     }
@@ -122,7 +130,7 @@ public class TagController {
      * @return the amount of deleted related tags.
      */
     @DeleteMapping("/user/{userId}")
-    public long deleteAllUserTags(@PathVariable(name = "userId") Long userId) {
+    public long deleteAllUserTags(final @PathVariable(name = "userId") Long userId) {
         return tagService.deleteAllUserTags(userId);
     }
 
@@ -132,7 +140,7 @@ public class TagController {
      * @return the amount of deleted related tags.
      */
     @DeleteMapping("/question/{questionId}")
-    public long deleteAllQuestionTags(@PathVariable(name = "questionId") Long questionId) {
+    public long deleteAllQuestionTags(final @PathVariable(name = "questionId") Long questionId) {
         return tagService.deleteAllQuestionTags(questionId);
     }
 }

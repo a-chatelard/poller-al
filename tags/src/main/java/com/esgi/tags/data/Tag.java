@@ -1,9 +1,9 @@
 package com.esgi.tags.data;
 
-
-import org.apache.catalina.User;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import java.util.List;
 
 
@@ -22,16 +22,22 @@ public class Tag {
     @ManyToOne(optional = false)
     private Category category;
 
+    /**
+     * The related user tags.
+     */
     @OneToMany(mappedBy = "tag")
     private List<UserTag> usersTags;
 
+    /**
+     * The related question tags.
+     */
     @OneToMany(mappedBy = "tag")
     private List<QuestionTag> questionsTags;
 
-    public Tag() {}
+    public Tag() { }
 
-    public Tag(String label) {
-        this.label = label;
+    public Tag(final String newLabel) {
+        this.label = newLabel;
     }
 
     /**
@@ -54,23 +60,49 @@ public class Tag {
         this.category = newCategory;
     }
 
+    /**
+     * @return the related user tags.
+     */
     public List<UserTag> getUsersTags() {
         return usersTags;
     }
-    public void addUserTag(UserTag userTag) {
-        this.usersTags.add(userTag);
+
+    /**
+     * Add a user tag.
+     * @param newUserTag the user tag to add.
+     */
+    public void addUserTag(final UserTag newUserTag) {
+        this.usersTags.add(newUserTag);
     }
-    public void removeUserTag(UserTag userTag) {
+
+    /**
+     * Remove a user tag.
+     * @param userTag the user tag to remove.
+     */
+    public void removeUserTag(final UserTag userTag) {
         this.usersTags.remove(userTag);
     }
 
+    /**
+     * @return the related question tags.
+     */
     public List<QuestionTag> getQuestionsTags() {
         return questionsTags;
     }
-    public void addQuestionTag(QuestionTag questionTag) {
-        this.questionsTags.add(questionTag);
+
+    /**
+     * Add a question tag.
+     * @param newQuestionTag the question tag to add.
+     */
+    public void addQuestionTag(final QuestionTag newQuestionTag) {
+        this.questionsTags.add(newQuestionTag);
     }
-    public void removeQuestionTag(QuestionTag questionTag) {
+
+    /**
+     * Remove a question tag.
+     * @param questionTag the question tag to remove.
+     */
+    public void removeQuestionTag(final QuestionTag questionTag) {
         this.questionsTags.remove(questionTag);
     }
 }
