@@ -49,4 +49,15 @@ public class UserController {
 
         userService.createUser(login, lastName);
     }
+
+    /**
+     * Return if a user exists with the concerned ID.
+     *
+     * @param userId the ID of the user.
+     * @return true if the user exist, otherwise false.
+     */
+    @GetMapping("/users/{userId}/exists")
+    public boolean doesUserExist(@PathVariable(name = "userId") Long userId) {
+        return userService.doesUserExist(userId);
+    }
 }
