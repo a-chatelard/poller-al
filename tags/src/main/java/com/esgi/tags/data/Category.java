@@ -3,7 +3,10 @@ package com.esgi.tags.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity
@@ -22,10 +25,10 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
     private List<Tag> tags;
 
-    public Category() {}
+    public Category() { }
 
-    public Category(String label) {
-        this.label = label;
+    public Category(final String newLabel) {
+        this.label = newLabel;
     }
 
     /**
@@ -43,10 +46,10 @@ public class Category {
     }
 
     /**
-     * Add a tag in this category
+     * Add a tag in this category.
      * @param tag the tag to add to this category
      */
-    public void addTag(Tag tag) {
+    public void addTag(final Tag tag) {
         this.tags.add(tag);
     }
 }

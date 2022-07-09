@@ -30,7 +30,7 @@ public class UserService {
         userRepository.save(userIdentity);
     }
 
-    boolean isUserExist(long userId) {
-        return getUser(userId) != null;
+    public boolean doesUserExist(long userId) {
+        return userRepository.existsById(userId);
     }
 }

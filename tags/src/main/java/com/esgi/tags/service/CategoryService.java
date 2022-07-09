@@ -11,10 +11,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CategoryService {
+
+    /**
+     * The category repository.
+     */
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public Category getByLabel(String categoryLabel) throws ResourceNotFoundException {
+    /**
+     * Get a category by label.
+     * @param categoryLabel the category label.
+     * @return the related category entity.
+     * @throws ResourceNotFoundException Category not found.
+     */
+    public Category getByLabel(final String categoryLabel) throws ResourceNotFoundException {
         var category = categoryRepository.findById(categoryLabel);
 
         if (category.isEmpty()) {
@@ -24,11 +34,22 @@ public class CategoryService {
         return category.get();
     }
 
-    public Page<Category> getAllPaged(Pageable pageable) {
+    /**
+     * Get all categories with paging.
+     * @param pageable the paging parameters.
+     * @return the list of category paged.
+     */
+    public Page<Category> getAllPaged(final Pageable pageable) {
         return categoryRepository.findAll(pageable);
     }
 
-    public Category create(String categoryLabel) throws ResourceConflictException {
+    /**
+     * Create a catetgory.
+     * @param categoryLabel the category label.
+     * @return the created category entity.
+     * @throws ResourceConflictException Category already exists.
+     */
+    public Category create(final String categoryLabel) throws ResourceConflictException {
         if (categoryRepository.existsById(categoryLabel)) {
             throw new ResourceConflictException(Category.class, categoryLabel);
         }
@@ -40,7 +61,11 @@ public class CategoryService {
         return category;
     }
 
-    public void deleteByLabel(String categoryLabel) {
+    /**
+     * Delete a category.
+     * @param categoryLabel the category label.
+     */
+    public void deleteByLabel(final String categoryLabel) {
         categoryRepository.deleteById(categoryLabel);
     }
 }
