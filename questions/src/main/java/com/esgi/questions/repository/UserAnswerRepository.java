@@ -18,4 +18,6 @@ public interface UserAnswerRepository extends PagingAndSortingRepository<UserAns
             long userId,
             long answerId,
             long points);
+
+    long deleteByUserId(long userId);
 }

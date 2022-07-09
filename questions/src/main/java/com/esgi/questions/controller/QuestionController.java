@@ -10,6 +10,7 @@ import com.esgi.questions.service.QuestionService;
 /**
  * @author djer1
  */
+@RequestMapping("/question")
 @RestController
 public final class QuestionController {
     /**
@@ -36,4 +37,17 @@ public final class QuestionController {
         return response;
     }
 
+    /**
+     * Delete userAnwsers of an user.
+     *
+     * @param userId     the user id
+     * @return the number of the userAnswers deleted.
+     */
+    @DeleteMapping("/user/{userId}")
+    public String deleteUser(
+            @PathVariable(name = "userId") final long userId) {
+
+        String response = questionService.deleteByUserId(userId);
+        return response;
+    }
 }

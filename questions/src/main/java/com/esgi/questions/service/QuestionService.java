@@ -68,7 +68,13 @@ public final class QuestionService {
         return response;
     }
 
-    private QuestionService() {
+    public String deleteUserAnswer(final long userId)
+    {
+        long deleteUserAnswerCount = 0;
 
+        deleteUserAnswerCount = userAnswerRepository.deleteByUserId(userId);
+
+        return deleteUserAnswerCount + "UserAnswer supprimé(s)";
     }
+
 }

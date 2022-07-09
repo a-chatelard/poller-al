@@ -31,8 +31,7 @@ public class UserAnswer {
     /**
      * The id of the user who answered.
      */
-    @ManyToOne
-    private User user;
+    private long userId;
 
     /**
      * The concerned answer.
@@ -62,15 +61,15 @@ public class UserAnswer {
     /**
      * @return the user
      */
-    public User getUser() {
-        return user;
+    public User getUserId() {
+        return userId;
     }
 
     /**
-     * @param newUser the user to set
+     * @param newUserId the userId to set
      */
-    public void setUser(final User newUser) {
-        this.user = newUser;
+    public void setUserId(final long newUserId) {
+        this.userId = newUserId;
     }
 
     /**
