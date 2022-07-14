@@ -153,7 +153,7 @@ public class TagService {
 
         var tag = getByLabel(tagLabel);
 
-        tag.addUserTag(new UserTag(tag, questionId));
+        tag.addQuestionTag(new QuestionTag(tag, questionId));
 
         tagRepository.save(tag);
     }
