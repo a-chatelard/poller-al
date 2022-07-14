@@ -38,43 +38,50 @@ public class Answer {
      */
     private Boolean correctAnswer;
 
+    public Answer() { }
+
+    public Answer(final Question newQuestion, final Boolean newCorrectAnswer) {
+        this.question = newQuestion;
+        this.correctAnswer = newCorrectAnswer;
+    }
+
     /**
-     * @return the id
+     * @return the id.
      */
     public long getId() {
         return id;
     }
 
     /**
-     * @param newId the id to set
+     * @param newId the id to set.
      */
     public void setId(final long newId) {
         this.id = newId;
     }
 
     /**
-     * @return the question
+     * @return the question.
      */
     public Question getQuestion() {
         return question;
     }
 
     /**
-     * @param newQuestion the question to set
+     * @param newQuestion the question to set.
      */
     public void setQuestion(final Question newQuestion) {
         this.question = newQuestion;
     }
 
     /**
-     * @return the correctAnswer
+     * @return the correctAnswer.
      */
     public Boolean getCorrectAnswer() {
         return correctAnswer;
     }
 
     /**
-     * @param newCorrectAnswer the correctAnswer to set
+     * @param newCorrectAnswer the correctAnswer to set.
      */
     public void setCorrectAnswer(final Boolean newCorrectAnswer) {
         this.correctAnswer = newCorrectAnswer;

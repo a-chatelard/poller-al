@@ -20,8 +20,71 @@ public final class QuestionController {
     private QuestionService questionService;
 
     /**
-     * Gets a response of an user's answer.
-     *
+     * Create a question.
+     * @param questionContent   the question content.
+     * @param correctAnswer     the correct answer.
+     * @return the created question entity.
+     */
+    @PostMapping
+    public Question createQuestion(final String questionContent, final boolean correctAnswer) {
+        return questionService.create(questionContent, correctAnswer);
+    }
+
+    /**
+     * Check if a question exists.
+     * @param questionId    the question id.
+     * @return true if the question exists, otherwise false.
+     */
+    @GetMapping("/{questionId}/exists")
+    public Category doesQuestionExist(final @PathVariable(name = "questionId") long questionId) {
+        return questionService.exist(questionId);
+    }
+
+    /**
+     * Get a question by Id.
+     * @param questionId    the question id.
+     * @return the related question.
+     * @throws ResourceNotFoundException Question not found.
+     */
+    @GetMapping("/{questionId}")
+    public Category getQuestionById(final @PathVariable(name = "questionId") long questionId)
+            throws ResourceNotFoundException {
+        return questionService.getById(questionId);
+    }
+
+    /**
+     * Get all the questions with paging.
+     * @param pageable
+     * @return the list of questions paged.
+     */
+    @GetMapping
+    public Page<Category> getAllQuestionsPaged(final Pageable pageable) {
+        return questionService.getAllPaged(pageable);
+    }
+
+    /**
+     * Delete a question.
+     * @param questionId    the question id.
+     */
+    @DeleteMapping("/{questionId}")
+    public void deleteQuestion(final @PathVariable(name = "questionId") long questionId) {
+        questionService.deleteById(questionId);
+    }
+
+    /**
+     * Ask a question to an user.
+     * @param questionId    the question id.
+     * @param userId        the user id.
+     * @return the result of asking the question.
+     */
+    @GetMapping("/ask")
+    public String askQuestion(@RequestParam final long questionId, @RequestParam final long userId) {
+        String result = questionService.askQuestion(questionId, userId);
+        return result;
+    }
+
+    /**
+     * Get a response of an user's answer.
      * @param questionId the question id.
      * @param answer     the user answer.
      * @param userId     the user id.
@@ -39,7 +102,6 @@ public final class QuestionController {
 
     /**
      * Delete userAnwsers of an user.
-     *
      * @param userId     the user id
      * @return the number of the userAnswers deleted.
      */

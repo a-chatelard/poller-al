@@ -37,47 +37,53 @@ public class Question {
      * The question's tag.
      */
     @ManyToOne
-    private Tag tag;
+    private String tag;
+
+    public Question() { }
+
+    public Question(final String newContent) {
+        this.content = newContent;
+    }
 
     /**
-     * @return the id
+     * @return the id.
      */
     public long getId() {
         return id;
     }
 
     /**
-     * @param newId the id to set
+     * @param newId the id to set.
      */
     public void setId(final long newId) {
         this.id = newId;
     }
 
     /**
-     * @return the content
+     * @return the content.
      */
     public String getContent() {
         return content;
     }
 
     /**
-     * @param newContent the content to set
+     * @param newContent the content to set.
      */
     public void setContent(final String newContent) {
         this.content = newContent;
     }
 
     /**
-     * @return the tag
+     * @return the tag.
      */
-    public Tag getTag() {
+    public String getTag() {
         return tag;
     }
 
     /**
-     * @param newTag the tag to set
+     * @param newTag the tag to set.
      */
-    public void setTag(final Tag newTag) {
+    public void setTag(final String newTag) {
         this.tag = newTag;
     }
 }

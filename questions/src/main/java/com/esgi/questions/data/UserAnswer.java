@@ -44,57 +44,64 @@ public class UserAnswer {
      */
     private Long points = null;
 
+    public UserAnswer() { }
+
+    public UserAnswer(final Answer newAnswer, final long newUserId) {
+        this.answer = newLabel;
+        this.userId = newUserId;
+    }
+
     /**
-     * @return the id
+     * @return the id.
      */
     public long getId() {
         return id;
     }
 
     /**
-     * @param newId the id to set
+     * @param newId the id to set.
      */
     public void setId(final long newId) {
         this.id = newId;
     }
 
     /**
-     * @return the user
+     * @return the user.
      */
     public User getUserId() {
         return userId;
     }
 
     /**
-     * @param newUserId the userId to set
+     * @param newUserId the userId to set.
      */
     public void setUserId(final long newUserId) {
         this.userId = newUserId;
     }
 
     /**
-     * @return the points
+     * @return the points.
      */
     public long getPoints() {
         return points;
     }
 
     /**
-     * @param newPoints the points to set
+     * @param newPoints the points to set.
      */
     public void setPoints(final long newPoints) {
         this.points = newPoints;
     }
 
     /**
-     * @return the answer
+     * @return the answer.
      */
     public Answer getAnswer() {
         return answer;
     }
 
     /**
-     * @param newAnswer the answer to set
+     * @param newAnswer the answer to set.
      */
     public void setAnswer(final Answer newAnswer) {
         this.answer = newAnswer;
