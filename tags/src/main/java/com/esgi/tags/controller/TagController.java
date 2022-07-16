@@ -1,6 +1,8 @@
 package com.esgi.tags.controller;
 
+import com.esgi.tags.data.QuestionTag;
 import com.esgi.tags.data.Tag;
+import com.esgi.tags.data.UserTag;
 import com.esgi.tags.service.TagService;
 import com.esgi.tags.service.exception.ResourceConflictException;
 import com.esgi.tags.service.exception.ResourceNotFoundException;
@@ -83,6 +85,18 @@ public class TagController {
     }
 
     /**
+     * Get all the user tags.
+     * @param userId the user ID.
+     * @param pageable the paging parameters.
+     * @return a list of user tag.
+     */
+    @GetMapping("/user/{userId}")
+    public Page<UserTag> getAllUserTags(
+            final@PathVariable(name = "userId") Long userId, final Pageable pageable) {
+        return tagService.getAllUserTags(userId, pageable);
+    }
+
+    /**
      * Remove a tag from a user.
      * @param tagLabel the tag label.
      * @param userId the user ID.
@@ -111,6 +125,18 @@ public class TagController {
     }
 
     /**
+     * Get all the question tags.
+     * @param questionId the question ID.
+     * @param pageable the paging parameters.
+     * @return a list of question tag.
+     */
+    @GetMapping("/question/{questionId}")
+    public Page<QuestionTag> getAllQuestionTags(
+            final@PathVariable(name = "questionId") Long questionId, final Pageable pageable) {
+        return tagService.getAllQuestionTags(questionId, pageable);
+    }
+
+    /**
      * Remove a tag from a question.
      * @param tagLabel the tag label.
      * @param questionId the question ID.
@@ -130,7 +156,7 @@ public class TagController {
      * @return the amount of deleted related tags.
      */
     @DeleteMapping("/user/{userId}")
-    public long deleteAllUserTags(final @PathVariable(name = "userId") Long userId) {
+    public Integer deleteAllUserTags(final @PathVariable(name = "userId") Long userId) {
         return tagService.deleteAllUserTags(userId);
     }
 
@@ -140,7 +166,7 @@ public class TagController {
      * @return the amount of deleted related tags.
      */
     @DeleteMapping("/question/{questionId}")
-    public long deleteAllQuestionTags(final @PathVariable(name = "questionId") Long questionId) {
+    public Integer deleteAllQuestionTags(final @PathVariable(name = "questionId") Long questionId) {
         return tagService.deleteAllQuestionTags(questionId);
     }
 }

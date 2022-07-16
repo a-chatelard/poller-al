@@ -3,11 +3,18 @@ package com.esgi.questions.service;
 import java.util.Optional;
 
 import com.esgi.questions.data.Answer;
+import com.esgi.questions.data.Question;
 import com.esgi.questions.data.UserAnswer;
 import com.esgi.questions.repository.AnswerRepository;
+import com.esgi.questions.repository.QuestionRepository;
 import com.esgi.questions.repository.UserAnswerRepository;
+import com.esgi.questions.service.exceptions.ResourceConflictException;
+import com.esgi.questions.service.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public final class QuestionService {
@@ -15,7 +22,7 @@ public final class QuestionService {
     /**
      * Amount of points per good answer.
      */
-    private long points = 5;
+    private final long points = 5;
 
     /**
      * The Answer repository.
@@ -41,14 +48,14 @@ public final class QuestionService {
      * @param correctAnswer     the correct answer.
      * @return the created question entity.
      */
-    public Question create(final string questionContent, final boolean correctAnswer) {
+    public Question create(final String questionContent, final boolean correctAnswer) {
         var question = new Question(questionContent);
 
+        var answer = new Answer(question, correctAnswer);
+
+        question.setAnswer(answer);
+
         questionRepository.save(question);
-
-        var anwser = new Answer(question, correctAnswer);
-
-        answerRepository.save(anwser);
 
         return question;
     }
@@ -91,32 +98,21 @@ public final class QuestionService {
      * Ask a question to an user.
      * @param questionId    the question id.
      * @param userId        the user id.
-     * @return the result for create a userAnswer.
      */
-    public String askQuestion(final long questionId, final long userId)
-    {
+    public void askQuestion(final long questionId, final long userId) throws ResourceNotFoundException {
         Optional<Question> question = questionRepository.findById(questionId);
 
         if (question.isEmpty()) {
-            return "La question n'a pas été trouvée.";
+            throw new ResourceNotFoundException(Question.class, questionId);
         }
 
-        if(doesUserExist(userId)) {
-            return "L'utlisateur n'a pas été trouvé.";
+        if (!doesUserExist(userId)) {
+            throw new ResourceNotFoundException("User", userId);
         }
 
-        Optional<Answer> answer = answerRepository.findByQuestionId(questionId);
-
-        if (answer.isEmpty())
-        {
-            return "La réponse attendue n'a pas été trouvée.";
-        }
-
-        var userAnswer = new UserAnswer(answer.get(), userId);
+        var userAnswer = new UserAnswer(question.get().getAnswer(), userId);
 
         userAnswerRepository.save(userAnswer);
-
-        return "La question a été posée à l'utilisateur.";
     }
 
     /**
@@ -126,33 +122,35 @@ public final class QuestionService {
      * @param userId        the user id.
      * @return the result for the user's answer.
      */
-    public String handleAnswer(final long questionId, final Boolean userResponse, final long userId) {
+    public String handleAnswer(final long questionId, final Boolean userResponse, final long userId)
+            throws ResourceNotFoundException, ResourceConflictException {
         Optional<Answer> answer = answerRepository.findByQuestionId(questionId);
 
         if (answer.isEmpty()) {
-            return "La question n'a pas été trouvée.";
+            throw new ResourceNotFoundException(Question.class, questionId);
         }
 
         Optional<UserAnswer> userAnswer = userAnswerRepository.findFirstByUserIdAndAnswerIdAndPoints(userId,
                 answer.get().getId(), null);
 
         if (userAnswer.isEmpty()) {
-            return "Cette question n'a pas été posée à l'utilisateur.";
+            throw new ResourceConflictException("Cette question n'a pas été posée à l'utilisateur.");
         }
 
-        String response = "";
+        String response;
 
+        var obtainedPoints = points;
         if (userResponse == answer.get().getCorrectAnswer()) {
             Optional<UserAnswer> lastGoodAnswer = userAnswerRepository
                     .findFirstByUserIdAndAnswerIdAndPointsGreaterThanOrderByPoints(userId, answer.get().getId(), 0);
             if (lastGoodAnswer.isPresent()) {
                 long lastPointsObtained = lastGoodAnswer.get().getPoints();
                 lastPointsObtained /= 2;
-                points = lastPointsObtained;
+                obtainedPoints = lastPointsObtained;
             }
-            userAnswer.get().setPoints(points);
+            userAnswer.get().setPoints(obtainedPoints);
 
-            response = "Bravo ! Vous avez trouvé !";
+            response = "Bravo ! Vous avez trouvé ! Vous obtenez " + obtainedPoints + " points.";
         } else {
             userAnswer.get().setPoints(0);
             response = "Oops ! Ce n'est pas correct.";
@@ -168,12 +166,10 @@ public final class QuestionService {
      * @param userId    the user id of the answer.
      * @return the number of userAnswer deleted.
      */
-    public String deleteUserAnswer(final long userId) {
-        long deleteUserAnswerCount = 0;
+    public String deleteUserAnswers(final long userId) {
+        var deleteUserAnswerCount = userAnswerRepository.deleteByUserId(userId);
 
-        deleteUserAnswerCount = userAnswerRepository.deleteByUserId(userId);
-
-        return deleteUserAnswerCount + "UserAnswer supprimé(s)";
+        return deleteUserAnswerCount + " UserAnswer supprimé(s)";
     }
 
     /**
@@ -182,9 +178,7 @@ public final class QuestionService {
      * @return true if the question exists, otherwise false.
      */
     public boolean exist(final long questionId) {
-        Optional<Question> question = questionRepository.findById(questionId);
-
-        return !question.isEmpty();
+        return questionRepository.existsById(questionId);
     }
 
     /**

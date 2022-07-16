@@ -1,12 +1,16 @@
 package com.esgi.questions.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
+import java.util.List;
 
 /**
  * @author djer1
@@ -30,13 +34,20 @@ public class Answer {
     /**
      * The question concerned by the answer.
      */
-    @OneToOne
+    @JsonIgnore
+    @OneToOne(mappedBy = "answer")
     private Question question;
 
     /**
      * The correct answer of the question.
      */
     private Boolean correctAnswer;
+
+    /**
+     * The related user answers.
+     */
+    @OneToMany(mappedBy = "answer", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<UserAnswer> userAnswers;
 
     public Answer() { }
 
@@ -87,4 +98,18 @@ public class Answer {
         this.correctAnswer = newCorrectAnswer;
     }
 
+    /**
+     * @return the user answers related to this answer.
+     */
+    public List<UserAnswer> getUserAnswers() {
+        return userAnswers;
+    }
+
+    /**
+     * Set the user answers.
+     * @param newUserAnswers the new user answers.
+     */
+    public void setUserAnswers(final List<UserAnswer> newUserAnswers) {
+        this.userAnswers = newUserAnswers;
+    }
 }

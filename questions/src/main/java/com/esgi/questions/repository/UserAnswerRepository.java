@@ -2,10 +2,13 @@ package com.esgi.questions.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.esgi.questions.data.UserAnswer;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author djer1
@@ -19,5 +22,8 @@ public interface UserAnswerRepository extends PagingAndSortingRepository<UserAns
             long answerId,
             long points);
 
-    long deleteByUserId(long userId);
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM UserAnswer ua WHERE ua.userId = ?1")
+    Integer deleteByUserId(long userId);
 }

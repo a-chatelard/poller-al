@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.CascadeType;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -36,7 +37,7 @@ public class UserAnswer {
     /**
      * The concerned answer.
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Answer answer;
 
     /**
@@ -47,7 +48,7 @@ public class UserAnswer {
     public UserAnswer() { }
 
     public UserAnswer(final Answer newAnswer, final long newUserId) {
-        this.answer = newLabel;
+        this.answer = newAnswer;
         this.userId = newUserId;
     }
 
@@ -66,10 +67,10 @@ public class UserAnswer {
     }
 
     /**
-     * @return the user.
+     * @return the user id.
      */
-    public User getUserId() {
-        return userId;
+    public long getUserId() {
+        return this.userId;
     }
 
     /**

@@ -37,9 +37,10 @@ public class UserIdentity {
      */
     private String lastName;
 
-    public UserIdentity(String login, String lastName) {
-        this.login = login;
-        this.lastName = lastName;
+
+    public UserIdentity(final String newLogin, final String newLastName) {
+        this.login = newLogin;
+        this.lastName = newLastName;
     }
 
     public UserIdentity() {

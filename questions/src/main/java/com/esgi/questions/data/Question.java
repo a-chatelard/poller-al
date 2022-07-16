@@ -3,7 +3,9 @@ package com.esgi.questions.data;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -34,10 +36,11 @@ public class Question {
     private String content;
 
     /**
-     * The question's tag.
+     * The question's answer.
      */
-    @ManyToOne
-    private String tag;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "question_id", referencedColumnName = "id")
+    private Answer answer;
 
     public Question() { }
 
@@ -74,16 +77,17 @@ public class Question {
     }
 
     /**
-     * @return the tag.
+     * @return the question's answer.
      */
-    public String getTag() {
-        return tag;
+    public Answer getAnswer() {
+        return answer;
     }
 
     /**
-     * @param newTag the tag to set.
+     * Set the answer of the question.
+     * @param newAnswer the answer.
      */
-    public void setTag(final String newTag) {
-        this.tag = newTag;
+    public void setAnswer(final Answer newAnswer) {
+        this.answer = newAnswer;
     }
 }

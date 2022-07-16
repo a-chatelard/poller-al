@@ -1,9 +1,12 @@
 package com.esgi.tags.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
 import java.util.List;
 
 
@@ -25,13 +28,15 @@ public class Tag {
     /**
      * The related user tags.
      */
-    @OneToMany(mappedBy = "tag")
+    @JsonIgnore
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     private List<UserTag> usersTags;
 
     /**
      * The related question tags.
      */
-    @OneToMany(mappedBy = "tag")
+    @JsonIgnore
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     private List<QuestionTag> questionsTags;
 
     public Tag() { }

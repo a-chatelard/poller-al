@@ -1,16 +1,26 @@
 package com.esgi.questions.controller;
 
+import com.esgi.questions.data.Question;
+import com.esgi.questions.service.exceptions.ResourceConflictException;
+import com.esgi.questions.service.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.esgi.questions.service.QuestionService;
 
 /**
  * @author djer1
  */
-@RequestMapping("/question")
+@RequestMapping("/questions")
 @RestController
 public final class QuestionController {
     /**
@@ -36,7 +46,7 @@ public final class QuestionController {
      * @return true if the question exists, otherwise false.
      */
     @GetMapping("/{questionId}/exists")
-    public Category doesQuestionExist(final @PathVariable(name = "questionId") long questionId) {
+    public boolean doesQuestionExist(final @PathVariable(name = "questionId") long questionId) {
         return questionService.exist(questionId);
     }
 
@@ -47,18 +57,18 @@ public final class QuestionController {
      * @throws ResourceNotFoundException Question not found.
      */
     @GetMapping("/{questionId}")
-    public Category getQuestionById(final @PathVariable(name = "questionId") long questionId)
+    public Question getQuestionById(final @PathVariable(name = "questionId") long questionId)
             throws ResourceNotFoundException {
         return questionService.getById(questionId);
     }
 
     /**
      * Get all the questions with paging.
-     * @param pageable
+     * @param pageable the paging parameters.
      * @return the list of questions paged.
      */
     @GetMapping
-    public Page<Category> getAllQuestionsPaged(final Pageable pageable) {
+    public Page<Question> getAllQuestionsPaged(final Pageable pageable) {
         return questionService.getAllPaged(pageable);
     }
 
@@ -75,12 +85,12 @@ public final class QuestionController {
      * Ask a question to an user.
      * @param questionId    the question id.
      * @param userId        the user id.
-     * @return the result of asking the question.
      */
-    @GetMapping("/ask")
-    public String askQuestion(@RequestParam final long questionId, @RequestParam final long userId) {
-        String result = questionService.askQuestion(questionId, userId);
-        return result;
+    @PostMapping("/{questionId}/user/{userId}/ask")
+    public void askQuestion(final @PathVariable(name = "questionId") long questionId,
+                              final @PathVariable(name = "userId") long userId)
+            throws ResourceNotFoundException {
+        questionService.askQuestion(questionId, userId);
     }
 
     /**
@@ -90,14 +100,13 @@ public final class QuestionController {
      * @param userId     the user id.
      * @return the response of the user's answer.
      */
-    @GetMapping("/response")
-    public String answer(@RequestParam
-    final long questionId, @RequestParam
-    final Boolean answer, @RequestParam
-    final long userId) {
-
-        String response = questionService.handleAnswer(questionId, answer, userId);
-        return response;
+    @PutMapping("/{questionId}/user/{userId}")
+    public String answer(
+            final @PathVariable(name = "questionId") long questionId,
+            final @PathVariable(name = "userId") long userId,
+            @RequestParam final Boolean answer)
+            throws ResourceConflictException, ResourceNotFoundException {
+        return questionService.handleAnswer(questionId, answer, userId);
     }
 
     /**
@@ -106,10 +115,8 @@ public final class QuestionController {
      * @return the number of the userAnswers deleted.
      */
     @DeleteMapping("/user/{userId}")
-    public String deleteUser(
+    public String deleteUserAnswers(
             @PathVariable(name = "userId") final long userId) {
-
-        String response = questionService.deleteByUserId(userId);
-        return response;
+        return questionService.deleteUserAnswers(userId);
     }
 }

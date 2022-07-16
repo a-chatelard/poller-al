@@ -104,16 +104,26 @@ public class TagService {
      * @throws ResourceNotFoundException Tag or User not found.
      */
     public void addUserTag(final String tagLabel, final Long userId) throws ResourceNotFoundException {
+        var tag = getByLabel(tagLabel);
+
         var doesUserExist = doesUserExist(userId);
         if (!doesUserExist) {
             throw new ResourceNotFoundException("User", userId);
         }
 
-        var tag = getByLabel(tagLabel);
-
         tag.addUserTag(new UserTag(tag, userId));
 
         tagRepository.save(tag);
+    }
+
+    /**
+     * Get all the tag related to a user.
+     * @param userId the user ID.
+     * @param pageable the paging parameters.
+     * @return a paged list of user tag.
+     */
+    public Page<UserTag> getAllUserTags(final Long userId, final Pageable pageable) {
+        return userTagRepository.findAllByUserId(userId, pageable);
     }
 
     /**
@@ -123,16 +133,13 @@ public class TagService {
      * @throws ResourceNotFoundException Tag or User not found.
      */
     public void removeUserTag(final String tagLabel, final Long userId) throws ResourceNotFoundException {
-        var doesUserExist = doesUserExist(userId);
-        if (!doesUserExist) {
-            throw new ResourceNotFoundException("User", userId);
+        var userTag = userTagRepository.findByUserIdAndTagLabel(userId, tagLabel);
+
+        if (userTag.isEmpty()) {
+            throw new ResourceNotFoundException(UserTag.class);
         }
 
-        var tag = getByLabel(tagLabel);
-
-        tag.removeUserTag(new UserTag(tag, userId));
-
-        tagRepository.save(tag);
+        userTagRepository.delete(userTag.get());
     }
 
     /**
@@ -144,18 +151,27 @@ public class TagService {
     public void addQuestionTag(final String tagLabel, final Long questionId) throws ResourceNotFoundException {
         // Devrait être remplacé par une message kafka sur un topic type "QuestionCheckTopic"
         // en envoyant l'identifiant de la question.
+        var tag = getByLabel(tagLabel);
 
         var doesQuestionExist = doesQuestionExist(questionId);
 
-        if (doesQuestionExist) {
+        if (!doesQuestionExist) {
             throw new ResourceNotFoundException("Question", questionId);
         }
-
-        var tag = getByLabel(tagLabel);
 
         tag.addQuestionTag(new QuestionTag(tag, questionId));
 
         tagRepository.save(tag);
+    }
+
+    /**
+     * Get all the tag related to a question.
+     * @param questionId the question ID.
+     * @param pageable the paging parameters.
+     * @return a paged list of question tag.
+     */
+    public Page<QuestionTag> getAllQuestionTags(final Long questionId, final Pageable pageable) {
+        return questionTagRepository.findAllByQuestionId(questionId, pageable);
     }
 
     /**
@@ -165,16 +181,13 @@ public class TagService {
      * @throws ResourceNotFoundException Tag or Question not found.
      */
     public void removeQuestionTag(final String tagLabel, final Long questionId) throws ResourceNotFoundException {
-        var doesQuestionExist = doesQuestionExist(questionId);
-        if (!doesQuestionExist) {
-            throw new ResourceNotFoundException("Question", questionId);
+        var questionTag = questionTagRepository.findByQuestionIdAndTagLabel(questionId, tagLabel);
+
+        if (questionTag.isEmpty()) {
+            throw new ResourceNotFoundException(QuestionTag.class);
         }
 
-        var tag = getByLabel(tagLabel);
-
-        tag.removeQuestionTag(new QuestionTag(tag, questionId));
-
-        tagRepository.save(tag);
+        questionTagRepository.delete(questionTag.get());
     }
 
     /**
@@ -182,7 +195,7 @@ public class TagService {
      * @param userId the user ID.
      * @return the amount of related tags deleted.
      */
-    public long deleteAllUserTags(final Long userId) {
+    public Integer deleteAllUserTags(final Long userId) {
         return userTagRepository.deleteByUserId(userId);
     }
 
@@ -191,7 +204,7 @@ public class TagService {
      * @param questionId the question ID.
      * @return the amount of related tags deleted.
      */
-    public long deleteAllQuestionTags(final Long questionId) {
+    public Integer deleteAllQuestionTags(final Long questionId) {
         return questionTagRepository.deleteByQuestionId(questionId);
     }
 
