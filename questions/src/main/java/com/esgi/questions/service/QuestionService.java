@@ -192,4 +192,14 @@ public final class QuestionService {
         RestTemplate restTemplate = new RestTemplate();
         return Boolean.TRUE.equals(restTemplate.getForObject(uri, Boolean.class));
     }
+
+    /**
+     * Get all the questions related to a user.
+     * @param userId the user Id.
+     * @param pageable the paging parameters.
+     * @return a paged list of question.
+     */
+    public Page<Question> getUserQuestions(final long userId, final Pageable pageable) {
+        return questionRepository.findByUserId(userId, pageable);
+    }
 }

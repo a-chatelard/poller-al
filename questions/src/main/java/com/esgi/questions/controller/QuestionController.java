@@ -110,6 +110,18 @@ public final class QuestionController {
     }
 
     /**
+     * Get all user questions.
+     * @param userId the user ID.
+     * @param pageable the paging parameters.
+     * @return the paged list of question.
+     */
+    @GetMapping("/user/{userId}")
+    public Page<Question> getUserQuestions(final @PathVariable(name = "userId") long userId,
+                                           final Pageable pageable) {
+        return questionService.getUserQuestions(userId, pageable);
+    }
+
+    /**
      * Delete userAnwsers of an user.
      * @param userId     the user id
      * @return the number of the userAnswers deleted.
