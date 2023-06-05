@@ -1,5 +1,6 @@
-package com.esgi.questions.application;
+package com.esgi.questions.controller.question;
 
+import com.esgi.questions.application.IQuestionReadRepository;
 import com.esgi.questions.domain.question.aggregate.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;

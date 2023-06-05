@@ -1,4 +1,4 @@
-package com.esgi.questions.domain.question.writeRepository;
+package com.esgi.questions.domain.question;
 
 import com.esgi.questions.domain.question.aggregate.Question;
 import org.springframework.data.repository.PagingAndSortingRepository;

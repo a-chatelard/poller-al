@@ -1,7 +1,7 @@
-package com.esgi.questions.application;
+package com.esgi.questions.controller.question;
 
 import com.esgi.questions.domain.question.aggregate.Question;
-import com.esgi.questions.domain.question.writeRepository.IQuestionWriteRepository;
+import com.esgi.questions.domain.question.IQuestionWriteRepository;
 import com.esgi.questions.service.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
