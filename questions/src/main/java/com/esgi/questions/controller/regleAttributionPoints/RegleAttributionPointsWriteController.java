@@ -16,28 +16,31 @@ public class RegleAttributionPointsWriteController {
     @PostMapping
     public Long createRegleAttributionPoints(final String libelle, final Integer pointsObtenus) {
         var regle = new RegleAttributionPoints(libelle, pointsObtenus);
+
         _repository.save(regle);
+
         return regle.getId();
     }
 
     @PutMapping("/{regleId}")
     public void updateRegle(final @PathVariable(name = "regleId") long regleId, final String libelle, final Integer pointsObtenus) {
         var regle = _repository.findById(regleId);
-        if (regle.isPresent()) {
-            regle.get().update(libelle, pointsObtenus);
-            _repository.save(regle.get());
-        } else {
+        if (regle.isEmpty()) {
             throw new EntityNotFoundException(String.format("Règle d'attribution de points d'ID %d non trouvé.", regleId));
         }
+
+        regle.get().update(libelle, pointsObtenus);
+
+        _repository.save(regle.get());
     }
 
     @DeleteMapping("/{regleId}")
     public void deleteRegle(final @PathVariable(name = "regleId") long regleId) {
-         var regle = _repository.findById(regleId);
-        if (regle.isPresent()) {
-            _repository.delete(regle.get());
-        } else {
+        var regle = _repository.findById(regleId);
+        if (regle.isEmpty()) {
             throw new EntityNotFoundException(String.format("Règle d'attribution de points d'ID %d non trouvé.", regleId));
         }
+
+        _repository.delete(regle.get());
     }
 }

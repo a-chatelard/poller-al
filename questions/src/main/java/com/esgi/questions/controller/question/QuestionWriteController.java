@@ -1,50 +1,59 @@
 package com.esgi.questions.controller.question;
 
+import com.esgi.questions.application.regleAttributionPoints.repositories.RegleAttributionPointsReadRepository;
 import com.esgi.questions.domain.question.Question;
 import com.esgi.questions.domain.question.QuestionWriteRepository;
-import com.esgi.questions.service.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
+@RequestMapping("/questions")
 @RestController
 public final class QuestionWriteController {
+    @Autowired
+    QuestionWriteRepository repository;
 
     @Autowired
-    QuestionWriteRepository questionWriteRepository;
+    RegleAttributionPointsReadRepository regleAttributionPointsReadRepository;
 
     @PostMapping
-    long CreateQuestion(long ressourceId, long tagId, String libelle, boolean bonneReponse)
+    public Long createQuestion(Long ressourceId, Long tagId, String libelle, boolean bonneReponse)
     {
-        Question question = new Question(ressourceId, tagId, libelle, bonneReponse);
-        return questionWriteRepository.create(question);
+        var question = new Question(ressourceId, tagId, libelle, bonneReponse);
+
+        // Check tag and ressource using gateways
+
+        repository.save(question);
+
+        return question.getId();
     }
 
-    void acceptQuestion(long questionId, long regleAttributionPointsId) throws ResourceNotFoundException {
-        Optional<Question> result = questionWriteRepository.getById(questionId);
-
-        if (result.isEmpty()) {
-            throw new ResourceNotFoundException(Question.class, questionId);
+    @PatchMapping("/{questionId}/accept")
+    public void acceptQuestion(final @PathVariable(name = "questionId") Long questionId, Long regleAttributionPointsId) throws ResourceNotFoundException {
+        var question = repository.findById(questionId);
+        if (question.isEmpty()) {
+            throw new ResourceNotFoundException(String.format("Question d'ID %d non trouvé.", questionId));
         }
 
-        Question question = result.get();
-        question.accept(regleAttributionPointsId);
+        var regle = regleAttributionPointsReadRepository.findById(regleAttributionPointsId);
+        if (regle.isEmpty()) {
+            throw new ResourceNotFoundException(String.format("Règle d'attribution de points d'ID %d non trouvée.", regleAttributionPointsId));
+        }
 
-        questionWriteRepository.update(question);
+        question.get().accept(regleAttributionPointsId);
+
+        repository.save(question.get());
     }
 
-    void rejectQuestion(long questionId) throws ResourceNotFoundException {
-        Optional<Question> result = questionWriteRepository.getById(questionId);
-
-        if (result.isEmpty()) {
-            throw new ResourceNotFoundException(Question.class, questionId);
+    @PatchMapping("/{questionId}/reject")
+    public void rejectQuestion(final @PathVariable(name = "questionId") Long questionId) throws ResourceNotFoundException {
+        var question = repository.findById(questionId);
+        if (question.isEmpty()) {
+            throw new ResourceNotFoundException(String.format("Question d'ID %d non trouvé.", questionId));
         }
 
-        Question question = result.get();
-        question.reject();
+        question.get().reject();
 
-        questionWriteRepository.update(question);
+        repository.save(question.get());
     }
 }

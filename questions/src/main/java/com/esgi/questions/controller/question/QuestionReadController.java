@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/questions")
 @RestController
@@ -24,24 +25,26 @@ public final class QuestionReadController
     }
 
     @GetMapping("/{questionId}")
-    public List<Question> getQuestionById(final @PathVariable(name = "questionId") Long questionId)
+    public Optional<Question> getQuestionById(final @PathVariable(name = "questionId") Long questionId)
     {
         return repository.getQuestionById(questionId);
     }
 
-    @GetMapping()
-    Question[] getQuestionsByTagId(long tagId)
+    @GetMapping("/tag/{tagId}")
+    public List<Question> getQuestionsByTagId(final @PathVariable(name = "tagId") Long tagId)
     {
         return repository.getQuestionsByTagId(tagId);
     }
 
-    Question[] getQuestionsByRessourceId(long ressourceId)
+    @GetMapping("/ressource/{ressourceId}")
+    public List<Question> getQuestionsByRessourceId(final @PathVariable(name = "ressourceId") Long ressourceId)
     {
-        return repository.getQuestionsByTagId(ressourceId);
+        return repository.getQuestionsByRessourceId(ressourceId);
     }
 
-    Question[] getQuestionsNonValidees()
+    @GetMapping("/active")
+    public List<Question> getQuestionsNonValidees()
     {
-        return repository.getQuestionsNonValidees();
+        return repository.getQuestionsByValid(null);
     }
 }
