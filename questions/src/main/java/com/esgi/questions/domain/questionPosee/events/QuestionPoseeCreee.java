@@ -1,4 +1,4 @@
-package com.esgi.questions.domain.questionPosee.domainEvent;
+package com.esgi.questions.domain.questionPosee.events;
 
 public class QuestionPoseeCreee {
     /**Id de la questionPosee.*/

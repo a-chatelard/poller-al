@@ -3,6 +3,8 @@ package com.esgi.questions.controller.question;
 import com.esgi.questions.application.regleAttributionPoints.repositories.RegleAttributionPointsReadRepository;
 import com.esgi.questions.domain.question.Question;
 import com.esgi.questions.domain.question.QuestionWriteRepository;
+import com.esgi.questions.gateways.RessourceGateway;
+import com.esgi.questions.gateways.TagGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -12,16 +14,24 @@ import org.springframework.web.bind.annotation.*;
 public final class QuestionWriteController {
     @Autowired
     QuestionWriteRepository repository;
-
     @Autowired
     RegleAttributionPointsReadRepository regleAttributionPointsReadRepository;
+    @Autowired
+    TagGateway tagGateway;
+    @Autowired
+    RessourceGateway ressourceGateway;
 
     @PostMapping
     public Long createQuestion(Long ressourceId, Long tagId, String libelle, boolean bonneReponse)
     {
-        var question = new Question(ressourceId, tagId, libelle, bonneReponse);
+        if (!ressourceGateway.doesRessourceExist(ressourceId)) {
+            throw new ResourceNotFoundException(String.format("Ressource d'ID %d non trouvée", ressourceId));
+        }
+        if (!tagGateway.doesTagExist(tagId)) {
+            throw new ResourceNotFoundException(String.format("Tag d'ID %d non trouvé", tagId));
+        }
 
-        // Check tag and ressource using gateways
+        var question = new Question(ressourceId, tagId, libelle, bonneReponse);
 
         repository.save(question);
 
