@@ -10,6 +10,7 @@ public class Question {
     @Nullable
     private long regleAttributionPointsId;
     private RessourceConcernee ressource;
+    @Nullable
     private boolean valid;
 
     public Question(long ressourceId, long tagId, String libelle, boolean bonneReponse)
@@ -23,6 +24,7 @@ public class Question {
 
     public void accept(long regleAttributionPointsId)
     {
+        this.valid = true;
         this.regleAttributionPointsId = regleAttributionPointsId;
     }
 
