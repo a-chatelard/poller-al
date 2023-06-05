@@ -1,4 +1,4 @@
-package com.esgi.questions.domain.regleAttributionPoints.aggregate;
+package com.esgi.questions.domain.regleAttributionPoints;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

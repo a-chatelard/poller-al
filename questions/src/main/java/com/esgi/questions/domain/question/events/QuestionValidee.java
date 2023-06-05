@@ -1,4 +1,4 @@
-package com.esgi.questions.domain.question.domainEvent;
+package com.esgi.questions.domain.question.events;
 
 public class QuestionValidee {
     private long questionId;

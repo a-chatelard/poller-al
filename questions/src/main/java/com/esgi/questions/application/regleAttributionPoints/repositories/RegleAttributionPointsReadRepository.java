@@ -1,6 +1,6 @@
 package com.esgi.questions.application.regleAttributionPoints.repositories;
 
-import com.esgi.questions.domain.regleAttributionPoints.aggregate.RegleAttributionPoints;
+import com.esgi.questions.domain.regleAttributionPoints.RegleAttributionPoints;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 

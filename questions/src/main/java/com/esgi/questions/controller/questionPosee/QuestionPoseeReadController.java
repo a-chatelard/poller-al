@@ -1,6 +1,6 @@
 package com.esgi.questions.controller.questionPosee;
 
-import com.esgi.questions.application.questionPoseeReadRepository;
+import com.esgi.questions.application.questionPosee.repositories.QuestionPoseeReadRepository;
 import com.esgi.questions.domain.questionPosee.aggregate.QuestionPosee;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -11,7 +11,7 @@ public class QuestionPoseeReadController {
     /**
      * Service gérant les requêtes concernant la lecture des questionPosee.
      */
-    questionPoseeReadRepository m_questionPoseeReadRepository;
+    QuestionPoseeReadRepository m_questionPoseeReadRepository;
 
     /**
      * Get a questionPosee.

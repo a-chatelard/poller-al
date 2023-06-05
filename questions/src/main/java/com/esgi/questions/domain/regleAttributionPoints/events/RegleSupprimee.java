@@ -1,4 +1,4 @@
-package com.esgi.questions.domain.regleAttributionPoints.domainEvent;
+package com.esgi.questions.domain.regleAttributionPoints.events;
 
 public class RegleSupprimee {
     public Long regleAttributionPointsId;

@@ -1,7 +1,7 @@
-package com.esgi.questions.controller;
+package com.esgi.questions.controller.regleAttributionPoints;
 
-import com.esgi.questions.domain.regleAttributionPoints.aggregate.RegleAttributionPoints;
-import com.esgi.questions.domain.regleAttributionPoints.repositories.RegleAttributionPointsWriteRepository;
+import com.esgi.questions.domain.regleAttributionPoints.RegleAttributionPoints;
+import com.esgi.questions.domain.regleAttributionPoints.RegleAttributionPointsWriteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

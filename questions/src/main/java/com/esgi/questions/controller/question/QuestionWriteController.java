@@ -1,7 +1,7 @@
 package com.esgi.questions.controller.question;
 
-import com.esgi.questions.domain.question.aggregate.Question;
-import com.esgi.questions.domain.question.IQuestionWriteRepository;
+import com.esgi.questions.domain.question.Question;
+import com.esgi.questions.domain.question.QuestionWriteRepository;
 import com.esgi.questions.service.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +13,7 @@ import java.util.Optional;
 public final class QuestionWriteController {
 
     @Autowired
-    IQuestionWriteRepository questionWriteRepository;
+    QuestionWriteRepository questionWriteRepository;
 
     @PostMapping
     long CreateQuestion(long ressourceId, long tagId, String libelle, boolean bonneReponse)
@@ -26,7 +26,7 @@ public final class QuestionWriteController {
         Optional<Question> result = questionWriteRepository.getById(questionId);
 
         if (result.isEmpty()) {
-            throw new ResourceNotFoundException(com.esgi.questions.domain.question.aggregate.Question.class, questionId);
+            throw new ResourceNotFoundException(Question.class, questionId);
         }
 
         Question question = result.get();
@@ -39,7 +39,7 @@ public final class QuestionWriteController {
         Optional<Question> result = questionWriteRepository.getById(questionId);
 
         if (result.isEmpty()) {
-            throw new ResourceNotFoundException(com.esgi.questions.domain.question.aggregate.Question.class, questionId);
+            throw new ResourceNotFoundException(Question.class, questionId);
         }
 
         Question question = result.get();
