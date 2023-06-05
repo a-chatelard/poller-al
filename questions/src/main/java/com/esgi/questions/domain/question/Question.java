@@ -8,15 +8,36 @@ import javax.persistence.Id;
 
 @Entity
 public class Question {
+    /**
+     * The question Id.
+     */
     @GeneratedValue
     @Id
     private Long id;
+    /**
+     * The ressourceId of the ressource associated with the question.
+     */
     private Long ressourceId;
+    /**
+     * The tagId of the tag associated with the question.
+     */
     private Long tagId;
+    /**
+     * The regleAttributionPointsId of the regleAttributionPoints associated with the question
+     */
     @Nullable
     private Long regleAttributionPointsId;
+    /**
+     * The question wording.
+     */
     private String libelle;
+    /**
+     * The correct answer to the question.
+     */
     private Boolean bonneReponse;
+    /**
+     * The validation state of the question.
+     */
     @Nullable
     private Boolean valid;
 
@@ -52,12 +73,18 @@ public class Question {
         return valid;
     }
 
+    /**
+     * Accept the question and associate it with a regleAttributionPoints.
+     */
     public void accept(long regleAttributionPointsId)
     {
         this.valid = true;
         this.regleAttributionPointsId = regleAttributionPointsId;
     }
 
+    /**
+     * Reject the question.
+     */
     public void reject()
     {
         this.valid = false;
