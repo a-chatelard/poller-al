@@ -1,6 +1,6 @@
 package com.esgi.questions.controller.questionPosee;
 
-import com.esgi.identity.UtilisateurGateway;
+import com.esgi.questions.UtilisateurGateway;
 import com.esgi.questions.domain.questionPosee.questionPoseeWriteRepository;
 import com.esgi.questions.domain.questionPosee.aggregate.QuestionPosee;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,10 +24,13 @@ public class QuestionPoseeWriteController {
      * @return the created questionPosee Id.
      */
     @PostMapping
-    public long createQuestionPosee(long questionId, long utilisateurId) {
+    public long createQuestionPosee(long questionId, long utilisateurId) throws Exception {
+       if( m_utilisateurGateway.isUserExisting(utilisateurId)){
         QuestionPosee questionPosee = new QuestionPosee(questionId, utilisateurId);
         m_questionPoseeWriteRepository.save(questionPosee);
-        return questionPosee.getId();
+        return questionPosee.getId();} else {
+           throw new Exception("The user doesn't exist");
+       }
 
     }
 
