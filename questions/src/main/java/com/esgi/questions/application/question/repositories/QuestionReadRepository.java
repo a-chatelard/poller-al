@@ -20,6 +20,6 @@ public interface QuestionReadRepository extends Repository<Question, Long> {
     @Query("SELECT q FROM Question q WHERE q.ressourceId = ?1")
     List<Question> getQuestionsByRessourceId(Long ressourceId);
 
-    @Query("SELECT q FROM Question q WHERE q.valid = ?1")
-    List<Question> getQuestionsByValid(Boolean valid);
+    @Query("SELECT q FROM Question q WHERE q.valid IS NULL")
+    List<Question> getActiveQuestions();
 }

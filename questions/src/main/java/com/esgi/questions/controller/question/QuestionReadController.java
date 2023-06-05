@@ -45,6 +45,6 @@ public final class QuestionReadController
     @GetMapping("/active")
     public List<Question> getQuestionsNonValidees()
     {
-        return repository.getQuestionsByValid(null);
+        return repository.getActiveQuestions();
     }
 }
