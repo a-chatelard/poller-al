@@ -7,15 +7,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller handling write requests on a question
+ */
 @RequestMapping("/questions")
 @RestController
 public final class QuestionWriteController {
+    /**
+     * Repository for write operations on a question
+     */
     @Autowired
     QuestionWriteRepository repository;
 
+    /**
+     * Repository for read operations on a regleAttributionPoints
+     */
     @Autowired
     RegleAttributionPointsReadRepository regleAttributionPointsReadRepository;
 
+    /**
+     * Handles POST request to create a question
+     */
     @PostMapping
     public Long createQuestion(Long ressourceId, Long tagId, String libelle, boolean bonneReponse)
     {
@@ -28,6 +40,9 @@ public final class QuestionWriteController {
         return question.getId();
     }
 
+    /**
+     * Handles PATCH request to accept a question
+     */
     @PatchMapping("/{questionId}/accept")
     public void acceptQuestion(final @PathVariable(name = "questionId") Long questionId, Long regleAttributionPointsId) throws ResourceNotFoundException {
         var question = repository.findById(questionId);
@@ -45,6 +60,9 @@ public final class QuestionWriteController {
         repository.save(question.get());
     }
 
+    /**
+     * Handles PATCH request to reject a question
+     */
     @PatchMapping("/{questionId}/reject")
     public void rejectQuestion(final @PathVariable(name = "questionId") Long questionId) throws ResourceNotFoundException {
         var question = repository.findById(questionId);
